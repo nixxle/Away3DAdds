@@ -98,6 +98,10 @@ package com.nixxle.away3D
 				geo.addSubGeometry(objectToSubGeometry(subObj));
 
 			var mesh:Mesh = new Mesh(geo);
+
+			if($obj.hasOwnProperty('position')) 
+				mesh.position = new Vector3D($obj.position.x, $obj.position.y, $obj.position.z);
+
 			return mesh;
 		}
 	}
