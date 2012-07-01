@@ -1,6 +1,18 @@
+/*
+	Simple class that converts a Mesh to ByteArray (and vica versa) to be saved on disk or sent over the internet. 
+	Currently only does the geometry and it has only been tested on a single-geometry Mesh, so it is pretty limited. I agree. 
+	
+	Usage: 
+	var ba:ByteArray = MeshSave.meshToByteArray(myMesh); 
+	
+	var mesh:Mesh = MeshSave.byteArrayToMesh(myByteArray)
+
+	<3
+*/
+
 package com.nixxle.away3D
 {
-  import away3d.cameras.Camera3D;
+ 	 import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
 	import away3d.containers.View3D;
 	import away3d.core.base.Geometry;
@@ -12,14 +24,22 @@ package com.nixxle.away3D
 	import flash.geom.Vector3D;
 	import flash.utils.ByteArray;
 
-	public class Utils3Dyteq
+	public class MeshSave
 	{
 		public function Utils3Dyteq()
 		{
 		}
 	
 	
-  	public static function byteArrayToMesh($ba:ByteArray):Mesh{
+		// Convert a Mesh to ByteArray	
+		public static function meshToByteArray($mesh:Mesh):ByteArray{			
+			var ba:ByteArray = new ByteArray();
+			ba.writeObject(meshToObject($mesh));
+			return ba; 
+		}
+	
+		// Convert ByteArray Object (created by this class) back to Mesh
+  		public static function byteArrayToMesh($ba:ByteArray):Mesh{
 			return objectToMesh($ba.readObject())
 		}
 
@@ -32,12 +52,6 @@ package com.nixxle.away3D
 			}
 			
 			return m;
-		}
-		
-		public static function meshToByteArray($mesh:Mesh):ByteArray{			
-			var ba:ByteArray = new ByteArray();
-			ba.writeObject(meshToObject($mesh));
-			return ba; 
 		}
 		
 		public static function subGeometryToObject($s:SubGeometry):Object{
