@@ -45,7 +45,15 @@ package com.nixxle.away3D
 
 		public static function meshToObject($mesh:Mesh):Object{
 			if(!$mesh.geometry) return {};
-			var m:Object = { geometry : { subGeometries: [] }, position: { x: $mesh.position.x, y: $mesh.position.y, z: $mesh.position.z } };
+			var m:Object = 
+				{ 	geometry : 
+						{ subGeometries: [] }, 
+					position: { 
+						x: $mesh.position.x, 
+						y: $mesh.position.y, 
+						z: $mesh.position.z 
+					} 
+				};
 			
 			for each(var g:SubGeometry in $mesh.geometry.subGeometries){
 				m.geometry.subGeometries.push(subGeometryToObject(g));
@@ -58,11 +66,11 @@ package com.nixxle.away3D
 			
 			return { 
 				vertices :  $s.vertexData ,
-					uvs :  $s.UVData,
-					secondaryUvs :  $s.secondaryUVData,
-					vertexNormals :  $s.vertexNormalData,
-					vertexTangents :  $s.vertexTangentData,
-					indices :  $s.indexData
+				uvs :  $s.UVData,
+				secondaryUvs :  $s.secondaryUVData,
+				vertexNormals :  $s.vertexNormalData,
+				vertexTangents :  $s.vertexTangentData,
+				indices :  $s.indexData
 				//faceNormalsData : not included
 				//faceWeights : not included 
 				//faceTangents :  not included
@@ -85,9 +93,10 @@ package com.nixxle.away3D
 		public static function objectToMesh($obj:Object):Mesh{			
 			var geo:Geometry = new Geometry();
 			var subGeo:SubGeometry; 
-			for each(var subObj:Object in $obj.geometry.subGeometries ){
-				geo.addSubGeometry(objectToSubGeometry(subObj));			
-					}
+
+			for each(var subObj:Object in $obj.geometry.subGeometries )
+				geo.addSubGeometry(objectToSubGeometry(subObj));
+
 			var mesh:Mesh = new Mesh(geo);
 			return mesh;
 		}
