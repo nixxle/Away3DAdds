@@ -1,4 +1,4 @@
-package com.dyteq.away3D
+package com.nixxle.away3D
 {
   import away3d.cameras.Camera3D;
 	import away3d.containers.ObjectContainer3D;
