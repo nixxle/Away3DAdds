@@ -1,0 +1,81 @@
+package com.dyteq.away3D
+{
+  import away3d.cameras.Camera3D;
+	import away3d.containers.ObjectContainer3D;
+	import away3d.containers.View3D;
+	import away3d.core.base.Geometry;
+	import away3d.core.base.SubGeometry;
+	import away3d.entities.Mesh;
+	
+	import flash.geom.Matrix3D;
+	import flash.geom.Utils3D;
+	import flash.geom.Vector3D;
+	import flash.utils.ByteArray;
+
+	public class Utils3Dyteq
+	{
+		public function Utils3Dyteq()
+		{
+		}
+	
+	
+  	public static function byteArrayToMesh($ba:ByteArray):Mesh{
+			return objectToMesh($ba.readObject())
+		}
+
+		public static function meshToObject($mesh:Mesh):Object{
+			if(!$mesh.geometry) return {};
+			var m:Object = { geometry : { subGeometries: [] }, position: { x: $mesh.position.x, y: $mesh.position.y, z: $mesh.position.z } };
+			
+			for each(var g:SubGeometry in $mesh.geometry.subGeometries){
+				m.geometry.subGeometries.push(subGeometryToObject(g));
+			}
+			
+			return m;
+		}
+		
+		public static function meshToByteArray($mesh:Mesh):ByteArray{			
+			var ba:ByteArray = new ByteArray();
+			ba.writeObject(meshToObject($mesh));
+			return ba; 
+		}
+		
+		public static function subGeometryToObject($s:SubGeometry):Object{
+			
+			return { 
+				vertices :  $s.vertexData ,
+					uvs :  $s.UVData,
+					secondaryUvs :  $s.secondaryUVData,
+					vertexNormals :  $s.vertexNormalData,
+					vertexTangents :  $s.vertexTangentData,
+					indices :  $s.indexData
+				//faceNormalsData : not included
+				//faceWeights : not included 
+				//faceTangents :  not included
+			}
+			
+		}
+		
+		public static function objectToSubGeometry($obj:Object):SubGeometry{
+			var s:SubGeometry = new SubGeometry(); 
+			s.updateVertexData($obj.vertices); 
+			s.updateIndexData($obj.indices);
+			s.updateSecondaryUVData($obj.secondaryUvs);
+			s.updateVertexNormalData($obj.vertexNormals);
+			s.updateVertexTangentData($obj.vertexTangents);
+			s.updateUVData($obj.uvs);
+			return s;
+		}
+		
+		
+		public static function objectToMesh($obj:Object):Mesh{			
+			var geo:Geometry = new Geometry();
+			var subGeo:SubGeometry; 
+			for each(var subObj:Object in $obj.geometry.subGeometries ){
+				geo.addSubGeometry(objectToSubGeometry(subObj));			
+					}
+			var mesh:Mesh = new Mesh(geo);
+			return mesh;
+		}
+	}
+}
